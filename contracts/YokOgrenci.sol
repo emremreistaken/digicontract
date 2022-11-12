@@ -1,19 +1,23 @@
-// SPDX License Identifier: MIT
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
+import "./Kurum.sol";
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
-contract eImza is EIP712 {
+contract YokOgrenci is Kurum {
 
-    constructor() EIP712("eImzaVerifier","1") {}
+    constructor(string memory _name, address _signer) Kurum(_name, _signer) {}
 
-    mapping(bytes => bool) usedSignatures;
-    mapping(bytes32 => bytes32) signatureToHashe;
+    mapping(bytes => bytes32) signatureToHash;
 
-    function internalVerify(bytes memory signature, bytes32 messageHash) internal pure {
-        address recovered = ECDSA.recover(messageHash, signature);
+    function verify(bytes memory signature, bytes32 messageHash) external view returns (address recovered) {
+        recovered = ECDSA.recover(messageHash, signature);
+        require(authorized[recovered]);
+        return recovered;
     }
 
-
-
+    function sign(bytes memory signature, bytes32 messageHash) external {
+        require(authorized[tx.origin]);
+        signatureToHash[signature] = messageHash;
+    }
 }
