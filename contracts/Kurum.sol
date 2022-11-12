@@ -4,7 +4,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract Kurum is Ownable {
-    mapping(address => bool) authorized;
+    mapping(address => uint) authorized;
     mapping(bytes => bool) usedSignatures;
 
     string kurumName;
@@ -15,26 +15,31 @@ contract Kurum is Ownable {
         kurumSigner = _kurumsigner;
     }
 
-    modifier onlyAuthorized() virtual {
-        require (authorized[msg.sender], "not authorized");
+    modifier onlyAuthorized(uint[] memory _authTypes) virtual {
+        uint c;
+        for(uint i = 0; i < _authTypes.length; i++){
+            if(authorized[msg.sender] == _authTypes[i] && c != 1){
+                c = 1;
+            }
+        }
+        require(c == 1, "not authorized");
         _;
     }
 
-    function getAuthorized(bytes memory signature, bytes32 messageHash) external {
-        require(!usedSignatures[signature], "signature is used");
+    modifier onlyKurumSigner() virtual {
+        require(msg.sender == kurumSigner, "not authorized");
+        _;
+    }
 
-        address recovered = ECDSA.recover(messageHash, signature);
-
-        require(recovered == kurumSigner, "silivri");
-
-        authorized[msg.sender] = true;
+    function setAuthorized(address _toBeAuthed, uint _authType) external onlyKurumSigner {
+        authorized[_toBeAuthed] = _authType;
     }
 
     function deAuthorize(address _address) external onlyOwner {
-        authorized[_address] = false;
+        authorized[_address] = 0;
     }
 
-    function isAuthorized(address _address) external virtual view returns(bool){
+    function authLevel(address _address) external virtual view returns(uint){
         return authorized[_address];
     }
 }

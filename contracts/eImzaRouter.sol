@@ -11,7 +11,7 @@ contract eImzaRouter is Ownable {
     function verify(bytes memory signature, bytes32 messageHash, uint kurumIndex) public returns(address adr) {
         address kurumAdresi = indexToKurumAdresi[kurumIndex];
         IKurum kurum = IKurum(kurumAdresi);
-        require(kurum.isAuthorized(msg.sender), "kurumda sorgulama yetkiniz yok");
+        require(kurum.authLevel(msg.sender) != 0, "no authority");
 
         (bool success,bytes memory result) = kurumAdresi.call(abi.encodeWithSignature("verify(bytes,bytes32)", signature, messageHash));
         require(success, "failed");

@@ -8,9 +8,7 @@ contract MaliyeBakanligi is Kurum {
 
     constructor(string memory _name, address _signer) Kurum(_name, _signer) {}
 
-    mapping(bytes => bytes32) signatureToHash;
-
-    function verify(bytes memory signature, bytes32 messageHash) external view returns (address recovered) {
+    function receteVerification(bytes memory signature, bytes32 messageHash) external view returns (address recovered) {
         recovered = ECDSA.recover(messageHash, signature);
         require(authorized[recovered]);
         return recovered;
