@@ -15,6 +15,11 @@ contract Kurum is Ownable {
         kurumSigner = _kurumsigner;
     }
 
+    modifier onlyAuthorized() virtual {
+        require (authorized[msg.sender], "not authorized");
+        _;
+    }
+
     function getAuthorized(bytes memory signature, bytes32 messageHash) external {
         require(!usedSignatures[signature], "signature is used");
 
