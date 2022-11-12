@@ -15,8 +15,8 @@ contract Yok is Kurum {
         require(authorized[recovered] != 0, "address not found");
     }
 
-    function sign(uint id, bytes memory signature, bytes32 messageHash) external {
-        require(authorized[msg.sender] == 1);
-        idToHash[id] = messageHash;
+    function publishDiploma(uint id, bytes memory signature, bytes32 messageHash) external {
+        require(authorized[msg.sender] == 1); //only Dean can publish diplomas
+        idToHashToSign[id][messageHash] = signature;
     }
 }
