@@ -4,7 +4,7 @@ import "./Kurum.sol";
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
-contract Diploma is Kurum {
+contract Yok is Kurum {
 
     constructor(string memory _name, address _signer) Kurum(_name, _signer) {}
 
