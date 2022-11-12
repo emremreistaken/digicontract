@@ -1,4 +1,4 @@
-// SPDX License Identifier: MIT
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
 import "./IKurum.sol";
@@ -15,8 +15,8 @@ contract eImzaRouter is Ownable {
 
         (bool success,bytes memory result) = kurumAdresi.call(abi.encodeWithSignature("verify(bytes,bytes32)", signature, messageHash));
         require(success, "failed");
-        adr = abi.decode(result, (adress));
-        return;
+        adr = abi.decode(result, (address));
+        return adr;
     }
 
     function addKurum(address _kurum) external onlyOwner {
