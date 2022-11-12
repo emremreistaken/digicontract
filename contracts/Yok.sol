@@ -8,7 +8,7 @@ contract Yok is Kurum {
 
     constructor(string memory _name, address _signer) Kurum(_name, _signer) {}
 
-    mapping(uint => mapping(bytes32 => bytes)) idToHashToSign;
+    mapping(uint => mapping(bytes32 => bytes)) public idToHashToSign;
 
     function verify(bytes memory signature, bytes32 messageHash) external view returns (address recovered) {
         recovered = ECDSA.recover(messageHash, signature);

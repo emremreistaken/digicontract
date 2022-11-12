@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 contract MaliyeBakanligi is Kurum {
     constructor(string memory _name, address _signer) Kurum(_name, _signer) {}
 
-    mapping(uint => bytes) cekNumberToSig;
+    mapping(uint => bytes) public cekNumberToSig;
 
     function verify(bytes memory signature, bytes32 messageHash) external view returns (address recovered) {
         recovered = ECDSA.recover(messageHash, signature);
@@ -22,7 +22,6 @@ contract MaliyeBakanligi is Kurum {
     function cekExecution(bytes memory signature, bytes32 messageHash) public returns(bool) {
         require(authorized[msg.sender] == 2, "caller is not a pharmacy"); // 2 for pharmacy
         address recovered = internalVerify(signature, messageHash);
-        require(authorized[recovered] == 1, "signer is not a doctor"); // 1 for doctor
         usedSignatures[signature] = true;
         return usedSignatures[signature];
     }

@@ -7,9 +7,9 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 contract SaglikBakanligi is Kurum {
     constructor(string memory _name, address _signer) Kurum(_name, _signer) {}
 
-    mapping(uint => bytes) receteNumberToSignature;
+    mapping(uint => bytes) public receteNumberToSignature;
 
-    function verify(bytes memory signature, bytes32 messageHash) public view returns (address recovered) {
+    function verify(bytes memory signature, bytes32 messageHash) external view returns (address recovered) {
         recovered = ECDSA.recover(messageHash, signature);
         require(authorized[recovered] != 0, "address not found");
     }
@@ -31,5 +31,6 @@ contract SaglikBakanligi is Kurum {
     function publishRecete(uint receteNo, bytes memory signature) external {
         require(authorized[msg.sender] == 1, "caller is not a pharmacy");
         receteNumberToSignature[receteNo] = signature;
+        userToId[msg.sender].push(receteNo);
     }
 }

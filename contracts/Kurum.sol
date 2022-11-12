@@ -4,11 +4,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract Kurum is Ownable {
-    mapping(address => uint) authorized;
-    mapping(bytes => bool) usedSignatures;
+    mapping(address => uint) public authorized;
+    mapping(bytes => bool) public usedSignatures;
+    mapping(address => uint[]) public userToId;
 
-    string kurumName;
-    address kurumSigner;
+    string public kurumName;
+    address public kurumSigner;
 
     constructor(string memory _name, address _kurumsigner){
         kurumName = _name;
