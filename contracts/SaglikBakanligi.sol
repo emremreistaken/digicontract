@@ -9,8 +9,9 @@ contract SaglikBakanligi is Kurum {
 
     mapping(uint => bytes) receteNumberToSignature;
 
-    function verify(bytes memory signature, bytes32 messageHash) public pure returns (address recovered) {
+    function verify(bytes memory signature, bytes32 messageHash) public view returns (address recovered) {
         recovered = ECDSA.recover(messageHash, signature);
+        require(authorized[recovered] != 0, "address not found");
     }
 
     function receteExecution(bytes memory signature, bytes32 messageHash) public returns(bool) {
