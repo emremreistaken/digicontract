@@ -17,7 +17,7 @@ contract SaglikBakanligi is Kurum {
     }
 
     function sign(bytes memory signature, bytes32 messageHash) external {
-        require(authorized[tx.origin]);
+        require(authorized[msg.sender]);
         signatureToHash[signature] = messageHash;
     }
 }
