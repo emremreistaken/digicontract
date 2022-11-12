@@ -7,14 +7,16 @@ contract YokOgrenci is Kurum {
 
     constructor(string memory _name, address _signer) Kurum(_name, _signer) {}
 
-    mapping(bytes32 => bytes32) signatureToHash;
+    mapping(bytes => bytes32) signatureToHash;
 
-    function verify(bytes32 memory signature, bytes32 memory messageHash) external  returns(bool) {
-        require(authorized[(ECDSA.recover(messageHash, signature))]);
-
+    function verify(bytes memory signature, bytes32 memory messageHash) external returns (address recovered) {
+        recovered = ECDSA.recover(messageHash, signature);
+        require(authorized[recovered]);
+        return;
     }
 
-    function sign(bytes32 memory signature, bytes32 memory messageHash) external {
+    function sign(bytes memory signature, bytes32 memory messageHash) external {
+        require(authorized[tx.origin]);
         signatureToHash[signature] = messageHash;
     }
 }
