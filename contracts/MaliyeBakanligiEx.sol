@@ -1,22 +1,11 @@
 // SPDX License Identifier: MIT
 pragma solidity >=0.8.0;
+import "./Kurum.sol";
 
-import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
-import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+contract SaglikBakanligi is Kurum {
+    constructor(string memory _name, address _signer) Kurum(_name, _signer) {}
 
-contract eImza is EIP712 {
+    function verify(bytes memory signature, bytes32) public {
 
-    constructor() EIP712("eImzaVerifier","1") {}
-
-    mapping(bytes => bool) usedSignatures;
-    mapping(uint => bytes32) typeToContentHash;
-
-    function verifyCek(bytes memory signature){
-        bytes32 hashed = _hashTypedDataV4(
-            
-        );
     }
-
-
-
 }

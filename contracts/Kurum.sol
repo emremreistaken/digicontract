@@ -20,16 +20,16 @@ contract Kurum is Ownable {
 
         address recovered = ECDSA.recover(messageHash, signature);
 
-        require(recovered == kurumSigner);
+        require(recovered == kurumSigner, "silivri");
 
         authorized[msg.sender] = true;
     }
 
-    function isAuthorized(address _address) external virtual view returns(bool){
-        return authorized[_address];
-    }
-
     function deAuthorize(address _address) external onlyOwner {
         authorized[_address] = false;
+    }
+
+    function isAuthorized(address _address) external virtual view returns(bool){
+        return authorized[_address];
     }
 }
