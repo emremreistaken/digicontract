@@ -7,6 +7,12 @@ contract Kurum is Ownable {
     mapping(address => uint) public authorized;
     mapping(bytes => bool) public usedSignatures;
     mapping(address => uint[]) public userToId;
+    mapping(address => userInfo) public addressToInfo;
+
+    struct userInfo {
+        string name;
+        string surname;
+    }
 
     string public kurumName;
     address public kurumSigner;
@@ -32,8 +38,9 @@ contract Kurum is Ownable {
         _;
     }
 
-    function setAuthorized(address _toBeAuthed, uint _authType) external onlyKurumSigner {
+    function setAuthorized(address _toBeAuthed, uint _authType, userInfo memory _struct) external onlyKurumSigner {
         authorized[_toBeAuthed] = _authType;
+        addressToInfo[_toBeAuthed] = _struct;
     }
 
     function deAuthorize(address _address) external onlyOwner {
