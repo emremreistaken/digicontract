@@ -22,9 +22,9 @@ contract NoterHizmetleri is Kurum, EIP712 {
         return usedSignatures[signature];
     }
 
-    function publishCek(uint receteNo, bytes memory signature) external {
-        receteNumberToSignature[receteNo] = signature;
-        userToId[msg.sender].push(receteNo);
+    function publishCek(uint cekNo, bytes memory signature) external {
+        cekNumberToSignature[cekNo] = signature;
+        userToId[msg.sender].push(cekNo);
     }
 
     function verify(bytes memory signature, string memory name, string memory value) external view returns (address recovered) {
